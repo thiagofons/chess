@@ -2,7 +2,8 @@ import "./styles/main.sass";
 
 import NavBar from "./components/layout/NavBar";
 import Container from "./components/layout/Container";
-import Board from "./components/views/Board";
+import Game from "./components/views/Game";
+import MovementsData from "./components/views/MovementsData";
 
 function App() {
   return (
@@ -10,7 +11,8 @@ function App() {
       <NavBar />
 
       <Container>
-        <Board />  
+        <Game />
+        <MovementsData />
       </Container>
 
     </div>
