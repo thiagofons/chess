@@ -5,6 +5,7 @@ Chess game built in React
 
 - main : código funcional
 - develop: código em desenvolvimento
+- feature/{nome da featurer}: feature do código em desenvolvimento
 
 ## Observações
 
