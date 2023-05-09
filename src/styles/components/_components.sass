@@ -1,36 +1,114 @@
 @use "../utilities/variables"
+
+.game
+  display: grid
+  gap: 1rem
+
+/* Player */
+.player__stats
+  background-color: variables.$grey
+  border-radius: 5px
+  display: flex
+  color: variables.$off-white
+  padding: .1rem .4rem
+  align-items: center
+  width: 15rem
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+
+  .player__image
+    img
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))
+
+  .player__info
+    width: 100%
+    .player__name
+      font-weight: normal
+    .player__time__left
+      font-weight: 300
+      font-size: .75rem
+      display: flex
+      justify-content: space-between
+
+.player__left
+  justify-self: left
+.player__right
+  justify-self: right
   
+
+/* Board */
 .board
   display: grid
   grid-template-rows: repeat(8, 1fr)
   grid-template-columns: repeat(8, 1fr)
-
-  width: 30rem
-  height: 30rem
-
-  background-color: variables.$grey
-  background: url("../../img/board/board.svg") no-repeat
-  background-size: 100%
+  
+  width: 100%
+  aspect-ratio: 1/1
 
   box-shadow: 0 0 1rem rgba(0, 0, 0, 75%)
-
-  border-radius: .25rem
 
   &>*
    display: flex
    justify-content: center
    align-items: center 
 
-.cell 
-  // 30rem dividido por 8
-  max-height: 3.75rem 
-  max-width: 3.75rem
+  .cell 
+    height: 2.8rem
+    width: 2.8rem
+    padding: .25rem
+    display: flex
+    justify-content: center
+    align-items: center
 
-.piece 
-  // 30rem dividido por 8
-  max-height: 3.75rem 
-  max-width: 3.75rem
+  .light
+    background-color: variables.$light-cell
+
+  .dark
+    background-color: variables.$dark-cell
+
+.piece
+  height: 2.8rem
+  width: 2.8rem
 
 .selected-piece
   border: 1px yellow solid
   z-index: 999
+
+/* Movements Data */
+.movements__data
+  color: variables.$off-white
+  padding: .5rem
+  background-color: variables.$grey
+  width: 100%
+  height: 15rem
+  border-radius: 5px
+  box-shadow: 0, 1rem, 1rem, black
+
+  &__header
+    padding-left: 1rem 
+    width: 100%
+    display: flex
+    justify-content: space-between
+
+  &__content
+    width: 100%
+    display: flex
+
+    &__number
+      margin: 0 .3rem
+    &__row
+      display: flex
+      justify-content: space-between
+      padding: 0 2px
+      width: 100%
+      background-color: variables.$dark-grey
+      border-radius: 2px
+
+  &__controls
+    width: 100%
+    display: flex
+    justify-content: space-around
+
+    
+      
+      
+      
