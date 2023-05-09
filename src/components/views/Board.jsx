@@ -39,7 +39,6 @@ const Board = () => {
   const handleClick = (event) => {
     let ct = event.currentTarget;
     if (ct.children.length != 0) {
-      console.log(ct.children)
       if (selectedPiece) {
         if (ct.id != selectedPiece) {
           let old = document.getElementById(selectedPiece);
@@ -52,6 +51,15 @@ const Board = () => {
         setSelectedPiece(ct.id);
       }
       ct.classList.toggle("selected-piece");
+    }else{
+      if (selectedPiece) {
+        let old = document.getElementById(selectedPiece);
+        old.classList.toggle("selected-piece");
+        setSelectedPiece(null);
+        let teste = old.firstElementChild;
+        ct.appendChild(teste.cloneNode(true))
+        teste.remove()
+      }
     }
   }
 
