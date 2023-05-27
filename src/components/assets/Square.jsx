@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import "../../styles/main.sass"
 
-const Square = (props) => {
-  return (
-    <div
-      className={`square ${
-        props.type == "light" ? "light__square" : "dark__square"
-      }`}
-    >
-      {props.piece}
-    </div>
-  );
-};
+export default function Square(props) {
+	const [piece, setPiece] = useState(props.piece);
+	const [id, setId] = useState('');
 
-export default Square;
+	useEffect(() => {
+		setId(props.rowName + props.colName);
+	}, [props.rowName, props.colName]);
+
+	useEffect(() => {
+		setPiece(props.piece);
+	}, [props.piece]);
+
+	return (
+		<div id={id} className={props.className} onClick={props.handleClick}>
+			{piece}
+		</div>
+	);
+};
