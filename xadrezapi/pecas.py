@@ -3,7 +3,7 @@ class Pecas:
         self.__nome = nome
         self.__historico=[]
 
-    def verifica(tabuleiro,x,y,xpos,ypos):
+    def verifica(tabuleiro,x,y):
         pass
 
     def get_nome(self):
