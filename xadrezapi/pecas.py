@@ -1,3 +1,12 @@
+def ocupada(tabuleiro, ypos, xpos):
+    if str(tabuleiro[ypos][xpos]) == "X":
+        return " "
+    elif str(tabuleiro[ypos][xpos])[0] == "i":
+        return "i"
+    else:
+        return "a"
+
+
 class Pecas:
     def __init__(self,nome):
         self.__nome = nome
