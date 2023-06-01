@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function Piece({name, src, alt}) {
+/* export default function Piece({name, src, alt}) {
     const [isCaptured, setIsCaptured] = useState(false);
 
     const capture = () => {
@@ -16,4 +16,33 @@ export default function Piece({name, src, alt}) {
             }
         </>
     )
+} */
+
+export default class Piece {
+    color = "";
+    src = "";
+    alt = "";
+    isCaptured = false;
+
+    constructor(color, src, alt) {
+        this.color = color;
+        this.src = src;
+        this.alt = alt;
+    }
+
+    capture() {
+        this.isCaptured = true;
+    }
+
+    render() {
+        return (
+            <>
+                {
+                    !this.isCaptured ?
+                    <img src={this.src} alt={this.alt} className="piece" /> :
+                    null
+                }
+            </>
+        )
+    }
 }
