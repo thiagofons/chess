@@ -12,7 +12,7 @@ class Rei(pecas.Pecas):
                     for j in range(-1,2):
                         if j + x <= 7 or j + x >= 0:
                             verificado = pecas.ocupada(tabuleiro,y, x)
-                            if verificado != "a" :
+                            if verificado != "a":
                                 posibilidades.append([y+i, j+x])
 
             return posibilidades

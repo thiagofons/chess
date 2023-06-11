@@ -27,50 +27,6 @@ def imprime_tabuleiro(tabuleiro):
 # r = rei
 # s = rainha
 
-def verifica_peao(tabuleiro, i, j):
-    pass
-
-
-def verifica_torre(tabuleiro, i, j):
-    pass
-
-
-def verifica_cavalor(tabuleiro, i, j):
-    pass
-
-
-def verifica_bispo(tabuleiro, i, j):
-    pass
-
-
-def verifica_rei(tabuleiro, i, j):
-    pass
-
-
-def verifica_rainha(tabuleiro, i, j):
-    pass
-
-
-def movimento(tabuleiro, x, y, prox, proy):
-    match tabuleiro[x][y][1]:
-        case 'p':
-            verifica_peao(tabuleiro, prox,proy)
-
-        case 't':
-            verifica_torre(tabuleiro, prox,proy)
-
-        case 'c':
-            verifica_cavalor(tabuleiro, prox,proy)
-
-        case 'b':
-            verifica_bispo(tabuleiro, prox,proy)
-
-        case 'r':
-            verifica_rei(tabuleiro, prox,proy)
-
-        case 's':
-            verifica_rainha(tabuleiro, prox,proy)
-
 if __name__ == '__main__':
 
     print(str("valor"))
