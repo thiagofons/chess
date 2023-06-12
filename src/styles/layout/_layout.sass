@@ -46,67 +46,63 @@
   color: variables.$off-white
   animation: openMenu .1s ease-in
 
-
-
-  &__header, &__options
+  &__options
     background-color: variables.$dark-grey
 
-  &__header
-    display: flex
-    justify-content: space-between
-    align-items: center
-    padding: 1rem 1rem
-    border-bottom: 1px solid variables.$dark-grey
-
-    img
-      transform: rotate(180deg)
-
-  &__options
-    
-    &>*:not(:last-child)
-      border-bottom: 1px solid variables.$dark-grey
-    &>*
-      padding: .5rem 0
+    &__content
+      display: none
+      flex-direction: column
+      
+      &>*:not(:last-child)
+        border-bottom: 1px solid variables.$dark-grey
       &>*
-        padding: .25rem 1rem
+        padding: .5rem 0
+        &>*
+          padding: .25rem 1rem
 
-    h2
-      font-weight: normal
-    h3
-      text-shadow: 2px 2px 2px black
+      h2
+        font-weight: normal
+      h3
+        text-shadow: 2px 2px 2px black
 
-    
-
-    .volume
-      &__control
-        input[type="range"]
-          width: 100%
-
-    .players__names
-
-      &__container
-        display: flex  
-        flex-direction: column
-        gap: .5rem
-
-        .player__name
-          &__data
-            display: flex
-            gap: .25rem
+      .volume
+        &__control
+          input[type="range"]
             width: 100%
 
-            &>*
-              border-radius: .25rem
+      .players__names
+        &__container
+          display: flex
+          flex-direction: column
+          gap: .5rem
 
-            input
-              background-color: variables.$white
-              border: none
+          .player__name
+            &__data
+              display: flex
+              gap: .25rem
               width: 100%
-              padding: 0 .5rem
 
-            button
-              border: none
-              background-color: variables.$white
+              &>*
+                border-radius: .25rem
+
+              input
+                background-color: variables.$white
+                border: none
+                width: 100%
+                padding: 0 .5rem
+
+              button
+                border: none
+                background-color: variables.$white
+    &__header
+      display: flex
+      justify-content: space-between
+      align-items: center
+      padding: 1rem 1rem
+      border-bottom: 1px solid variables.$dark-grey
+
+      img
+        transform: rotate(180deg)
 
   &__buttons
     display: flex
@@ -132,5 +128,3 @@
 
 .show
   display: flex
-
-  
