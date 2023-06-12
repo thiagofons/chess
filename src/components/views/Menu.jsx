@@ -1,16 +1,27 @@
 import "../../styles/main.sass";
 
 import DropArrow from "../../img/icons/toggle-arrow.svg";
+import { useState } from "react";
 
-const Menu = () => {
+const Menu = ({ updatePlayerName, updateDifficulty, updateMaxTime, showMenu }) => {
+  const [options, setOptions] = useState({
+    volume: 0,
+    players: {
+      player1: "",
+      player2: "",
+    },
+    difficulty: "",
+    maxTime: "",
+  });
+
   return (
-    <aside className="menu">
-      <section className="menu__options">
-        <header className="menu__options__header">
-          <h2>options</h2>
-          <img src={DropArrow} alt="" className="show__options" />
-        </header>
+    <aside className={`menu ${showMenu ? "show" : ""}`}>
+      <header className="menu__header">
+        <h2>options</h2>
+        <img src={DropArrow} alt="" className="show__options" />
+      </header>
 
+      <section className="menu__options">
         <section className="volume">
           <h3>volume</h3>
           <div className="volume__control">
@@ -18,29 +29,59 @@ const Menu = () => {
               type="range"
               name="volume"
               id="volume"
+              value={options.volume}
+              onChange={(e) =>
+                setOptions({ ...options, volume: e.target.value })
+              }
             />
           </div>
         </section>
 
         <section className="players__names">
           <h3>players</h3>
-          <div className="player__name">
-            <label htmlFor="" className="name">
-              player 1
-            </label>
-            <div className="player__name__data">
-              <input type="text" placeholder="insert your name here" />
-              <button>ok</button>
+          <div className="players__names__container">
+            <div className="player__name">
+              <label htmlFor="" className="name">
+                player 1
+              </label>
+              <div className="player__name__data">
+                <input
+                  type="text"
+                  placeholder="insert your name here"
+                  onChange={(e) =>
+                    setOptions({
+                      ...options,
+                      players: {
+                        player1: e.target.value,
+                        player2: options.players.player2,
+                      },
+                    })
+                  }
+                />
+                <button>ok</button>
+              </div>
             </div>
-          </div>
 
-          <div className="player__name">
-            <label htmlFor="" className="name">
-              player 2
-            </label>
-            <div className="player__name__data">
-              <input type="text" placeholder="insert your name here" />
-              <button>ok</button>
+            <div className="player__name">
+              <label htmlFor="" className="name">
+                player 2
+              </label>
+              <div className="player__name__data">
+                <input
+                  type="text"
+                  placeholder="insert your name here"
+                  onChange={(e) =>
+                    setOptions({
+                      ...options,
+                      players: {
+                        player1: options.players.player1,
+                        player2: e.target.value,
+                      },
+                    })
+                  }
+                />
+                <button>ok</button>
+              </div>
             </div>
           </div>
         </section>
