@@ -1,5 +1,4 @@
 @use "../utilities/variables"
-@use "../utilities/animations"
 
 .container
   background: variables.$brown-gradient
@@ -44,11 +43,10 @@
   justify-content: space-between
   box-shadow: 0 .25rem 1rem rgba(0,0,0,50%)
   color: variables.$off-white
-  animation: openMenu .1s ease-in
 
   &__options
     background-color: variables.$dark-grey
-
+  
     &__content
       display: none
       flex-direction: column
@@ -100,9 +98,14 @@
       align-items: center
       padding: 1rem 1rem
       border-bottom: 1px solid variables.$dark-grey
+      
 
-      img
+      .arrowDown
+        transition: .25s
         transform: rotate(180deg)
+      .arrowUp
+        transition: .25s
+        transform: rotate(0deg)
 
   &__buttons
     display: flex
@@ -128,3 +131,4 @@
 
 .show
   display: flex
+
