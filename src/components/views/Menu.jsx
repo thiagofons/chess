@@ -1,6 +1,8 @@
 import "../../styles/main.sass";
+import "animate.css"
 
 import DropArrow from "../../img/icons/toggle-arrow.svg";
+import { useState } from "react";
 
 const Menu = ({
   updatePlayerName,
@@ -9,6 +11,7 @@ const Menu = ({
   showMenu,
 }) => {
   const [options, setOptions] = useState({
+    volume: 0,
     players: {
       player1: "",
       player2: "",
@@ -20,25 +23,14 @@ const Menu = ({
   const [showOptions, setShowOptions] = useState(true);
 
   return (
-    <aside
-      className={`menu animate__animated animate__slideInLeft ${
-        showMenu ? "show" : ""
-      }`}
-    >
+    <aside className={`menu animate__animated animate__slideInLeft ${showMenu ? "show" : ""}`}>
       <section className="menu__options">
         <header className="menu__options__header">
           <h2>options</h2>
-          <img
-            src={DropArrow}
-            alt=""
-            className={`${showOptions ? "arrowDown" : "arrowUp"}`}
-            onClick={(e) => setShowOptions(!showOptions)}
-          />
+          <img src={DropArrow} alt="" className="show__options" onClick={e => setShowOptions(!showOptions)} />
         </header>
 
-        <div
-          className={`menu__options__content ${showOptions ? "show " : "  "}`}
-        >
+        <div className={`menu__options__content ${showOptions ? "show" : ""}`}>
           <section className="volume">
             <h3>volume</h3>
             <div className="volume__control">
@@ -47,10 +39,9 @@ const Menu = ({
                 name="volume"
                 id="volume"
                 value={options.volume}
-                onChange={(e) => {
-                  setVolume(e.target.value / 100);
-                  console.log(volume);
-                }}
+                onChange={(e) =>
+                  setOptions({ ...options, volume: e.target.value })
+                }
               />
             </div>
           </section>
