@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { MenuContext } from '../controllers/MenuContext';
 
 import Player from './Player';
 import Board from './Board';
@@ -6,11 +7,13 @@ import Board from './Board';
 import "../../styles/main.sass"
 
 const Game = () => {
+  const {options} = useContext(MenuContext);
+
   return (
     <main className="game">
-      <Player name="Player 1" side="left"/>
+      <Player name={options.players.player1} side="left"/>
       <Board />
-      <Player name="Player 2" side="right"/>
+      <Player name={options.players.player2} side="right"/>
     </main>
   );
 }

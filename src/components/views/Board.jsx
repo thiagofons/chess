@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from "react";
+import { MenuContext } from "../controllers/MenuContext";
 
-import "../../styles/main.sass"
-import { useState } from 'react';
+import "../../styles/main.sass";
 
-import boardImage from "../../img/board/board.svg"
-import { useEffect } from 'react';
+import boardImage from "../../img/board/board.svg";
 
-import Pieces from "../../pieces"
-import Square from '../assets/Square';
+import Pieces from "../../pieces";
+import Square from "../assets/Square";
+
+import movingPieceAudio from "../../audios/moving_piece.mp3";
 
 const Board = () => {
   /* const [board, setBoard] = useState([]);
@@ -32,6 +33,15 @@ const Board = () => {
       
     </div>
   ) */
+  const [audios, setAudios] = useState({
+    movingPiece: new Audio(movingPieceAudio),
+  });
+
+  const { options, setOptions } = useContext(MenuContext);
+
+  useEffect(() => {
+    audios.movingPiece.volume = options.volume / 100;
+  }, [options.volume]);
 
   const [board, setBoard] = useState([]);
   const [selectedPiece, setSelectedPiece] = useState(null);
@@ -51,25 +61,27 @@ const Board = () => {
         setSelectedPiece(ct.id);
       }
       ct.classList.toggle("selected-piece");
-    }else{
+    } else {
       if (selectedPiece) {
+        audios.movingPiece.play();
         let old = document.getElementById(selectedPiece);
         old.classList.toggle("selected-piece");
         setSelectedPiece(null);
         let teste = old.firstElementChild;
-        ct.appendChild(teste.cloneNode(true))
-        teste.remove()
+        ct.appendChild(teste.cloneNode(true));
+        teste.remove();
       }
     }
-  }
+  };
 
   return (
     <>
       <div>
-        {(selectedPiece &&
-          <span style={{ color: "white" }}>Selected Piece: {selectedPiece}</span>) ||
-          <span style={{ color: "white" }}>No piece selected!</span>
-        }
+        {(selectedPiece && (
+          <span style={{ color: "white" }}>
+            Selected Piece: {selectedPiece}
+          </span>
+        )) || <span style={{ color: "white" }}>No piece selected!</span>}
       </div>
       <main className="board">
         <div className="cell light" id="a8" onClick={handleClick}>
@@ -202,8 +214,7 @@ const Board = () => {
         </div>
       </main>
     </>
-  )
-
-}
+  );
+};
 
 export default Board;

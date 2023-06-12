@@ -1,8 +1,9 @@
 import "../../styles/main.sass";
-import "animate.css"
+import "animate.css";
 
 import DropArrow from "../../img/icons/toggle-arrow.svg";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { MenuContext } from "../controllers/MenuContext";
 
 const Menu = ({
   updatePlayerName,
@@ -10,24 +11,25 @@ const Menu = ({
   updateMaxTime,
   showMenu,
 }) => {
-  const [options, setOptions] = useState({
-    volume: 0,
-    players: {
-      player1: "",
-      player2: "",
-    },
-    difficulty: "",
-    maxTime: "",
-  });
+  const { options, setOptions } = useContext(MenuContext);
 
   const [showOptions, setShowOptions] = useState(true);
 
   return (
-    <aside className={`menu animate__animated animate__slideInLeft ${showMenu ? "show" : ""}`}>
+    <aside
+      className={`menu animate__animated animate__slideInLeft ${
+        showMenu ? "show" : ""
+      }`}
+    >
       <section className="menu__options">
         <header className="menu__options__header">
           <h2>options</h2>
-          <img src={DropArrow} alt="" className="show__options" onClick={e => setShowOptions(!showOptions)} />
+          <img
+            src={DropArrow}
+            alt=""
+            className="show__options"
+            onClick={(e) => setShowOptions(!showOptions)}
+          />
         </header>
 
         <div className={`menu__options__content ${showOptions ? "show" : ""}`}>
@@ -39,9 +41,7 @@ const Menu = ({
                 name="volume"
                 id="volume"
                 value={options.volume}
-                onChange={(e) =>
-                  setOptions({ ...options, volume: e.target.value })
-                }
+                onChange={(e) => {setOptions({...options, volume: e.target.value})}}
               />
             </div>
           </section>
@@ -57,6 +57,8 @@ const Menu = ({
                   <input
                     type="text"
                     placeholder="insert your name here"
+                    value={options.players.player1}
+                    maxLength={15}
                     onChange={(e) =>
                       setOptions({
                         ...options,
@@ -67,7 +69,6 @@ const Menu = ({
                       })
                     }
                   />
-                  <button>ok</button>
                 </div>
               </div>
 
@@ -79,6 +80,8 @@ const Menu = ({
                   <input
                     type="text"
                     placeholder="insert your name here"
+                    value={options.players.player2}
+                    maxLength={15}
                     onChange={(e) =>
                       setOptions({
                         ...options,
@@ -89,7 +92,6 @@ const Menu = ({
                       })
                     }
                   />
-                  <button>ok</button>
                 </div>
               </div>
             </div>
