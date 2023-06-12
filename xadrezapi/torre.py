@@ -6,7 +6,7 @@ class Torre(pecas.Pecas):
     def __init__(self, nome):
         super().__init__(nome)
 
-    def verifica(tabuleiro , x , y):
+    def verifica(self,tabuleiro, y, x):
         if super().get_nome()[0] == "j":
             posibilidades = []
             x_temp = x

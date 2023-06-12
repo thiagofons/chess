@@ -5,7 +5,7 @@ class Rainha(pecas.Pecas):
     def __init__(self, nome):
         super().__init__(nome)
 
-    def verifica(tabuleiro, x, y):
+    def verifica(self,tabuleiro, y, x):
         if super().get_nome()[0] == "j":
             posibilidades = []
             x_temp = x
@@ -59,9 +59,6 @@ class Rainha(pecas.Pecas):
                 else:
                     verificado = "l"
             verificado = " "
-            x_temp = x
-            y_temp = y
-            posibilidades = []
             x_temp = x
             y_temp = y
             verificado = " "

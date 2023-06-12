@@ -1,5 +1,5 @@
 def ocupada(tabuleiro, ypos, xpos):
-    if str(tabuleiro[ypos][xpos]) == "X":
+    if str(tabuleiro[ypos][xpos]) == "XX":
         return " "
     elif str(tabuleiro[ypos][xpos])[0] == "i":
         return "i"
@@ -12,7 +12,7 @@ class Pecas:
         self.__nome = nome
         self.__historico=[]
 
-    def verifica(tabuleiro,x,y):
+    def verifica(self,tabuleiro, y, x):
         pass
 
     def get_nome(self):
