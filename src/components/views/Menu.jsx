@@ -32,7 +32,7 @@ const Menu = ({
           />
         </header>
 
-        <div className={`menu__options__content ${showOptions ? "show" : ""}`}>
+        <main className={`menu__options__content ${showOptions ? "show" : ""}`}>
           <section className="volume">
             <h3>volume</h3>
             <div className="volume__control">
@@ -41,7 +41,9 @@ const Menu = ({
                 name="volume"
                 id="volume"
                 value={options.volume}
-                onChange={(e) => {setOptions({...options, volume: e.target.value})}}
+                onChange={(e) => {
+                  setOptions({ ...options, volume: e.target.value });
+                }}
               />
             </div>
           </section>
@@ -99,11 +101,32 @@ const Menu = ({
 
           <section className="difficulty">
             <h3>difficulty</h3>
+            <select
+              name=""
+              id=""
+              className="difficulty__selector"
+              value={options.difficulty}
+              onChange={(e) =>
+                setOptions({ ...options, difficulty: e.target.value })
+              }
+            >
+              <option value="easy">easy</option>
+              <option value="hard">hard</option>
+            </select>
           </section>
           <section className="max__time">
             <h3>max-time</h3>
+            <input
+              type="number"
+              name=""
+              id=""
+              min="0"
+              placeholder="time left"
+              onChange={(e) => setOptions({...options, maxTime: e.target.value})}
+              value={options.maxTime}
+            />
           </section>
-        </div>
+        </main>
       </section>
       <section className="menu__buttons">
         <button className="start__btn">start</button>

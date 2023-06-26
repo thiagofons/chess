@@ -9,8 +9,8 @@ export const MenuProvider = ({ children }) => {
       player1: "Player 1",
       player2: "Player 2",
     },
-    difficulty: "",
-    maxTime: "",
+    difficulty: "easy",
+    maxTime: "10",
   });
 
   useEffect(() => {
