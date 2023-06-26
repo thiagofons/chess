@@ -6,13 +6,28 @@ def ocupada(tabuleiro, ypos, xpos):
     else:
         return "a"
 
+def todas_jogadas(tabuleiro, quem): #todas as possiveis casas que podem ser jogadas por "quem"
+    checa = []
+    jogadas =[]
+    for i in range(8):
+        for j in range(8):
+            print(checa)
+            if str(tabuleiro[i][j])[0] == quem :
+                print(str(tabuleiro[i][j]))
+                jogadas = tabuleiro[i][j].verifica(tabuleiro, i, j, False, [])
+            if jogadas:
+                checa = checa + jogadas
+                jogadas = []
+            else:
+                jogadas = []
+    return checa
 
 class Pecas:
     def __init__(self,nome):
         self.__nome = nome
         self.__historico=[]
 
-    def verifica(self,tabuleiro, y, x):
+    def verifica(self,tabuleiro, y, x, check, qtd):
         pass
 
     def get_nome(self):
@@ -20,3 +35,10 @@ class Pecas:
 
     def __str__(self):
         return self.get_nome()
+
+
+def identificarei(tabuleiro, param):
+    for i in range(7):
+        for j in range(7):
+            if(str(tabuleiro[i][j])==param):
+                return [i,j]
