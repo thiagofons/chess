@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Pieces from "../../pieces";
 import Square from '../assets/Square';
+import Move from '../assets/Move';
 
 const Board = (props) => {
 	const getColName = (col) => {
@@ -108,9 +109,13 @@ const Board = (props) => {
 			let oldSquare = selectedSquare;
 			// Se tinha quadrado antigo selecionado
 			if (oldSquare) {
+        let move = new Move(oldSquare, oldSquare.piece, square);
+
 				// Captura sendo feito
 				if (square.piece) {
 					if (square.piece.color != oldSquare.piece.color) {
+            move.capturePiece = square.piece;
+            move.isCapture = true;
 						square.piece.capture();
 					} else {
 						alert("Não pode capturar sua própria peça!");
@@ -125,7 +130,7 @@ const Board = (props) => {
 				// Ao final de movimento/captura deseleciona quadrado
 				selectedSquare.setIsSelected(false);
 				setSelectedSquare(null);
-
+        props.appendMove(move);
 			} 
 			// Se não tinha quadrado antigo selecionado
 			else {

@@ -7,7 +7,7 @@ import Player from './Player';
 import Pieces from "../../pieces.js";
 import "../../styles/main.sass";
 
-const Game = () => {
+const Game = (props) => {
 	
 	const initializePieces = () => {
 		let piecesTemp = [];
@@ -41,7 +41,7 @@ const Game = () => {
 	return (
 		<main className="game">
 			<Player name="Player 1" side="left" />
-			<Board pieces={pieces} />
+			<Board pieces={pieces} appendMove={props.appendMove} />
 			<Player name="Player 2" side="right" />
 		</main>
 	);
