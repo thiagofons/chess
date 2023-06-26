@@ -21,7 +21,7 @@ export default class Piece {
             <>
                 {
                     !this.isCaptured ?
-                    <img src={this.src} alt={this.alt} className="piece" /> :
+                    <img src={this.src} alt={this.alt} className="piece" draggable="false" /> :
                     null
                 }
             </>
