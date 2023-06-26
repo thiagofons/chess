@@ -1,8 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { MenuContext } from "../controllers/MenuContext";
+import "../../styles/main.sass";
+
+import movingPieceAudio from "../../audios/moving_piece.mp3";
 import Pieces from "../../pieces";
 import Square from '../assets/Square';
 
 const Board = (props) => {
+  const [audios, setAudios] = useState({
+    movingPiece: new Audio(movingPieceAudio),
+  });
+
+  const { options, setOptions } = useContext(MenuContext);
+
+  useEffect(() => {
+    audios.movingPiece.volume = options.volume / 100;
+  }, [options.volume]);
+  
 	const getColName = (col) => {
 		switch (col) {
 			case 0: return 'a';
@@ -111,6 +125,7 @@ const Board = (props) => {
 				// Captura sendo feito
 				if (square.piece) {
 					if (square.piece.color != oldSquare.piece.color) {
+            audios.movingPiece.play();
 						square.piece.capture();
 					} else {
 						alert("Não pode capturar sua própria peça!");

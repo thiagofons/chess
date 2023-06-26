@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { MenuContext } from '../controllers/MenuContext';
 
 import Board from './Board';
 import Piece from './Piece';
@@ -8,7 +9,9 @@ import Pieces from "../../pieces.js";
 import "../../styles/main.sass";
 
 const Game = () => {
-	
+
+	const {options} = useContext(MenuContext);
+
 	const initializePieces = () => {
 		let piecesTemp = [];
 		for (let colorKey in Pieces) {
@@ -39,12 +42,13 @@ const Game = () => {
 	const [pieces, setPieces] = useState(initializePieces());
 
 	return (
-		<main className="game">
-			<Player name="Player 1" side="left" />
-			<Board pieces={pieces} />
-			<Player name="Player 2" side="right" />
-		</main>
-	);
+    <main className="game">
+      <Player name={options.players.player1} side="left"/>
+      <Board />
+      <Player name={options.players.player2} side="right"/>
+    </main>
+  );
+
 }
 
 export default Game;
