@@ -6,16 +6,16 @@ def ocupada(tabuleiro, ypos, xpos):
     else:
         return "a"
 
-def todas_jogadas(tabuleiro, quem): #todas as possiveis casas que podem ser jogadas por "quem"
+def todas_jogadas(tabuleiro, quem, mod): #todas as possiveis casas que podem ser jogadas por "quem"
     checa = []
     jogadas =[]
     for i in range(8):
         for j in range(8):
-            print(checa)
             if str(tabuleiro[i][j])[0] == quem :
-                print(str(tabuleiro[i][j]))
-                jogadas = tabuleiro[i][j].verifica(tabuleiro, i, j, False, [])
+                jogadas = tabuleiro[i][j].verifica(tabuleiro, i, j, False, [], mod-1)
             if jogadas:
+                print(jogadas)
+                print(str(tabuleiro[i][j]))
                 checa = checa + jogadas
                 jogadas = []
             else:

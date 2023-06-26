@@ -11,8 +11,8 @@ IREI = False # se o rei Ia está em check
 QTD_IREI= [] # pocisão das peças dando check no rei IA
 JREI = False # se os reis jogador está em check
 QTD_JREI= [] # pocisão das peças dando check no rei jogador
-# IJOGADAS = pecas.todas_jogadas(TABULEIRO, "i")
-J_JOGADAS = pecas.todas_jogadas(TABULEIRO, "j")
+I_JOGADAS = pecas.todas_jogadas(TABULEIRO, "i",2)
+#J_JOGADAS = pecas.todas_jogadas(TABULEIRO, "j",2)
 VEZ = "j"
 app = Flask(__name__)
 
@@ -61,6 +61,8 @@ def imprime():
             linha = linha + str(TABULEIRO_JOGADOR[i][j]) + "  "
         print(str(i) + " " + str(linha))
         linha = ""
-print("todas as jogadas")
-print(J_JOGADAS)
+print("todas as jogadas jogador ")
+#print(J_JOGADAS)
+print("todas as jogadas IA")
+print(I_JOGADAS)
 app.run(port=5000, host='localhost', debug=True)

@@ -29,7 +29,7 @@ def inicia():
     for i in range(4):
         tabuleiro.append(["XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"])
         # tabuleiro.append(["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "])
-    tabuleiro[4][4]=rei.Rei("jr")
+    #tabuleiro[4][4]=rainha.Rainha("js")
     tabuleiro.append(pecas_peao_j)
     tabuleiro.append(pecas_j)
     tabuleiro_jogador=[]
