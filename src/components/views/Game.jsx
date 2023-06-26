@@ -44,7 +44,7 @@ const Game = () => {
 	return (
     <main className="game">
       <Player name={options.players.player1} side="left"/>
-      <Board />
+      <Board pieces={pieces}/>
       <Player name={options.players.player2} side="right"/>
     </main>
   );
