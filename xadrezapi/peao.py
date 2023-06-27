@@ -11,7 +11,7 @@ class Peao(pecas.Pecas):
                     posicao_rei = pecas.identificarei(tabuleiro, "jr")  # identifico aonde o rei aliado está
                     # casas_inimigas = TABULEIRO[y][x].verifica(TABULEIRO, qtd[0], qtd[1], FALSE , [] ) #pega todos os possiveis caminhos da peça dando check
                     posibilidade = []
-                    posibilidade_final=[] # local que ira armazenar apenas as possibilidade que impeçam o check
+                    posibilidade_final = [] # local que ira armazenar apenas as possibilidade que impeçam o check
                     for i in range(-1, 2): # povoa possibilidade para todas a possiveis jogadas das peças, incluindo as que não detem o check
                         if x - i >= 0 and x - i <= 7:  # verifica se a casa está dentro do limite do tabuleiro
                             verifica = pecas.ocupada(tabuleiro, y - 1,
@@ -46,7 +46,6 @@ class Peao(pecas.Pecas):
                     return []
         #IA
         else:
-
                 if len(qtd) <= 1:  # verifica a quantidade de peças dando check
                     posicao_rei = pecas.identificarei(tabuleiro, "ir")  # identifico aonde o rei aliado está
                     # casas_inimigas = TABULEIRO[y][x].verifica(TABULEIRO, qtd[0], qtd[1], FALSE , [] ) #pega todos os possiveis caminhos da peça dando check
