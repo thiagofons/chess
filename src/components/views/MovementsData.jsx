@@ -20,31 +20,31 @@ const MovementsData = ({ moves }) => {
   }
 
   return (
-    <Container className="movements__data overflow-auto">
+    <Container fluid className="movements__data overflow-auto">
       <Row>
-        <Col md='6' className='px-5 py-1' id='white' >
-          <Row>Branco</Row>
+        <Col xs='12' sm='6' className='px-3 pt-1 pb-4' id='white' >
+          <Row className="mx-auto">Branco</Row>
           {moves.map((move, index) => {
             if (move.srcPiece.color == "white") {
               return (
                 getMoveText(move, index)
               )
-            } else {
+            } /* else {
               return (<Row><br /></Row>);
-            }
+            } */
 
           })}
         </Col>
-        <Col md='6' className='px-5 py-1' id='black'>
-          <Row>Preto</Row>
+        <Col xs='12' sm='6' className='px-3 pt-1 pb-1' id='black'>
+          <Row className="mx-auto">Preto</Row>
           {moves.map((move, index) => {
             if (move.srcPiece.color == "black") {
               return (
                 getMoveText(move, index)
               )
-            } else {
+            } /* else {
               return (<Row><br /></Row>);
-            }
+            } */
           })}
         </Col>
       </Row>
