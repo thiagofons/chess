@@ -223,33 +223,11 @@ const Board = (props) => {
   };
 
   return (
-    <>
-      <div>
-        {(selectedSquare && (
-          <>
-            {selectedSquare.piece && (
-              <span style={{ color: "white" }}>
-                Selected Piece: {selectedSquare.piece.alt}
-              </span>
-            )}
-            <br />
-            <span style={{ color: "white" }}>
-              Selected Square: {selectedSquare.id}
-            </span>
-          </>
-        )) || (
-          <>
-            <br />
-            <span style={{ color: "white" }}>No piece selected!</span>
-          </>
-        )}
-      </div>
-      <main className="board">
-        {board.map((row) => {
-          return row.map((square) => square.render(handleClick));
-        })}
-      </main>
-    </>
+    <main className="board">
+      {board.map((row) => {
+        return row.map((square) => square.render(handleClick));
+      })}
+    </main>
   );
 };
 

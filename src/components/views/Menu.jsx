@@ -27,7 +27,7 @@ const Menu = ({
           <img
             src={DropArrow}
             alt=""
-            className="show__options"
+            className={`show__options ${showOptions ? "up" : ""}`}
             onClick={(e) => setShowOptions(!showOptions)}
           />
         </header>
