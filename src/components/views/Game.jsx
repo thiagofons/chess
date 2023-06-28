@@ -11,6 +11,7 @@ import "../../styles/main.sass";
 const Game = (props) => {
 
 	const {options} = useContext(MenuContext);
+	const [currentPlayer, setCurrentPlayer] = useState(2);
 
 	const initializePieces = () => {
 		let piecesTemp = [];
@@ -41,11 +42,19 @@ const Game = (props) => {
 	
 	const [pieces, setPieces] = useState(initializePieces());
 
+	const alternatePlayer = () => {
+		if(currentPlayer == 1) {
+			setCurrentPlayer(2);
+		} else if(currentPlayer == 2) {
+			setCurrentPlayer(1);
+		}
+	}
+
 	return (
     <main className="game px-2">
-      <Player name={options.players.player1} side="left"/>
-      <Board pieces={pieces} appendMove={props.appendMove}/>
-      <Player name={options.players.player2} side="right"/>
+      <Player name={options.players.player1} side="left" isCurrPlayer={currentPlayer == 1}/>
+      <Board pieces={pieces} appendMove={props.appendMove} currentPlayer={currentPlayer} alternatePlayer={alternatePlayer} />
+      <Player name={options.players.player2} side="right" isCurrPlayer={currentPlayer == 2}/>
     </main>
   );
 
