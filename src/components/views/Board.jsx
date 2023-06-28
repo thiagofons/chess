@@ -11,6 +11,12 @@ const Board = (props) => {
   });
 
   const { options, setOptions } = useContext(MenuContext);
+  const [currentPlayer, setCurrentPlayer] = useState(props.currentPlayer);
+  const [showWrongPieceError, setShowWrongPieceError] = useState(false);
+
+  useEffect(() => {
+    setCurrentPlayer(currentPlayer);
+  }, [props.currentPlayer])
 
   useEffect(() => {
     audios.movingPiece.volume = options.volume / 100;
@@ -180,6 +186,21 @@ const Board = (props) => {
   const [board, setBoard] = useState(initializeBoard());
   const [selectedSquare, setSelectedSquare] = useState(null);
 
+  const alternatePlayer = () => {
+		console.log(currentPlayer)
+    props.alternatePlayer();
+		if(currentPlayer == 1) {
+			setCurrentPlayer(2);
+		} else if(currentPlayer == 2) {
+			setCurrentPlayer(1);
+		}
+	}
+
+  const changeSelectedSquare = (square) => {
+    setSelectedSquare(square);
+    setShowWrongPieceError(false);
+  }
+
   const handleClick = (square) => {
     // Selecionando quadrado novo
     if (square != selectedSquare) {
@@ -187,13 +208,13 @@ const Board = (props) => {
       // Se tinha quadrado antigo selecionado
       if (oldSquare) {
         let move = new Move(oldSquare, oldSquare.piece, square);
-      
+
         // Captura sendo feito
         if (square.piece) {
           if (square.piece.color != oldSquare.piece.color) {
             move.capturePiece = square.piece;
-			move.isCapture = true;
-			//square.piece.capture();
+            move.isCapture = true;
+            //square.piece.capture();
           } else {
             alert("Não pode capturar sua própria peça!");
             return;
@@ -207,14 +228,24 @@ const Board = (props) => {
 
         // Ao final de movimento/captura deseleciona quadrado
         selectedSquare.setIsSelected(false);
-        setSelectedSquare(null);
+        changeSelectedSquare(null);
         props.appendMove(move);
+        alternatePlayer();
       }
       // Se não tinha quadrado antigo selecionado
       else {
         // Seleciona quadrado novo apenas se há peça nele
         if (square.piece) {
-          setSelectedSquare(square);
+          if (currentPlayer == 1 && square.piece.color != "black") {
+            setShowWrongPieceError(true);
+            return;
+          } 
+          if (currentPlayer == 2 && square.piece.color != "white") {
+            setShowWrongPieceError(true);
+            return;
+          }
+          
+          changeSelectedSquare(square);
           square.setIsSelected(true);
         }
       }
@@ -222,31 +253,37 @@ const Board = (props) => {
     // Selecionando mesmo quadrado
     else {
       selectedSquare.setIsSelected(false);
-      setSelectedSquare(null);
+      changeSelectedSquare(null);
     }
   };
 
   return (
-	  <>
-	  	<div>
-		  {(selectedSquare &&
-				<>
-					{selectedSquare.piece && <span style={{ color: "white" }}>Selected Piece: {selectedSquare.piece.alt}</span>}
-					<br />
-					<span style={{ color: "white" }}>Selected Square: {selectedSquare.id}</span>
-				</>
-			) ||
-				<>
-					<br />
-					<span style={{ color: "white" }}>No piece selected!</span>
-				</>
-			}
-		</div>
-	    <main className="board">
-	      {board.map((row) => {
-	        return row.map((square) => square.render(handleClick));
-	      })}
-	    </main>
+    <>
+      <div>
+        {(selectedSquare &&
+          <>
+            {selectedSquare.piece && <span style={{ color: "white" }}>Peça Selecionada: {selectedSquare.piece.alt}</span>}
+            <br />
+            <span style={{ color: "white" }}>Quadrado Selecionado: {selectedSquare.id}</span>
+          </>
+        ) ||
+
+          (showWrongPieceError ?
+            <>
+              <br />
+              <span style={{ color: "white" }}>Esta peça não pertence a você!</span>
+            </> :
+            <>
+              <br />
+              <span style={{ color: "white" }}>Nenhuma peça selecionada.</span>
+            </>)
+        }
+      </div>
+      <main className="board">
+        {board.map((row) => {
+          return row.map((square) => square.render(handleClick));
+        })}
+      </main>
     </>
   );
 };
