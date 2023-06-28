@@ -1,7 +1,7 @@
 import "./styles/main.sass";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBar from "./components/layout/NavBar";
-import Container from "./components/layout/Container";
+import AppContainer from "./components/layout/AppContainer";
 import Game from "./components/views/Game";
 import MovementsData from "./components/views/MovementsData";
 import React, { useState } from "react";
@@ -19,10 +19,10 @@ function App() {
     <div className="App">
       <NavBar />
 
-      <Container>
+      <AppContainer>
         <Game appendMove={appendMove} />
         <MovementsData moves={moves} />
-      </Container>
+      </AppContainer>
 
     </div>
   );

@@ -2,12 +2,12 @@ import React from 'react';
 
 import "../../styles/main.sass"
 
-const Container = (props) => {
+const AppContainer = (props) => {
   return (
-    <div className="container">
+    <div className="app__container">
       {props.children}
     </div>
   )
 }
 
-export default Container;
+export default AppContainer;
