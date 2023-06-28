@@ -1,10 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { MenuContext } from "../controllers/MenuContext";
-import "../../styles/main.sass";
-
 import movingPieceAudio from "../../audios/moving_piece.mp3";
 import Pieces from "../../pieces";
-import Square from "../assets/Square";
+import Square from '../assets/Square';
+import Move from '../assets/Move';
 
 const Board = (props) => {
   const [audios, setAudios] = useState({
@@ -187,10 +186,14 @@ const Board = (props) => {
       let oldSquare = selectedSquare;
       // Se tinha quadrado antigo selecionado
       if (oldSquare) {
+        let move = new Move(oldSquare, oldSquare.piece, square);
+      
         // Captura sendo feito
         if (square.piece) {
           if (square.piece.color != oldSquare.piece.color) {
-            square.piece.capture();
+            move.capturePiece = square.piece;
+			move.isCapture = true;
+			//square.piece.capture();
           } else {
             alert("Não pode capturar sua própria peça!");
             return;
@@ -205,6 +208,7 @@ const Board = (props) => {
         // Ao final de movimento/captura deseleciona quadrado
         selectedSquare.setIsSelected(false);
         setSelectedSquare(null);
+        props.appendMove(move);
       }
       // Se não tinha quadrado antigo selecionado
       else {
@@ -223,11 +227,27 @@ const Board = (props) => {
   };
 
   return (
-    <main className="board">
-      {board.map((row) => {
-        return row.map((square) => square.render(handleClick));
-      })}
-    </main>
+	  <>
+	  	<div>
+		  {(selectedSquare &&
+				<>
+					{selectedSquare.piece && <span style={{ color: "white" }}>Selected Piece: {selectedSquare.piece.alt}</span>}
+					<br />
+					<span style={{ color: "white" }}>Selected Square: {selectedSquare.id}</span>
+				</>
+			) ||
+				<>
+					<br />
+					<span style={{ color: "white" }}>No piece selected!</span>
+				</>
+			}
+		</div>
+	    <main className="board">
+	      {board.map((row) => {
+	        return row.map((square) => square.render(handleClick));
+	      })}
+	    </main>
+    </>
   );
 };
 

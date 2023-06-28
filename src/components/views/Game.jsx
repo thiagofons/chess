@@ -8,7 +8,7 @@ import Player from './Player';
 import Pieces from "../../pieces.js";
 import "../../styles/main.sass";
 
-const Game = () => {
+const Game = (props) => {
 
 	const {options} = useContext(MenuContext);
 
@@ -42,9 +42,9 @@ const Game = () => {
 	const [pieces, setPieces] = useState(initializePieces());
 
 	return (
-    <main className="game">
+    <main className="game px-2">
       <Player name={options.players.player1} side="left"/>
-      <Board pieces={pieces}/>
+      <Board pieces={pieces} appendMove={props.appendMove}/>
       <Player name={options.players.player2} side="right"/>
     </main>
   );

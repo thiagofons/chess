@@ -1,5 +1,5 @@
 import "../../styles/main.sass";
-import "animate.css";
+//import "animate.css";
 
 import DropArrow from "../../img/icons/toggle-arrow.svg";
 import { useState, useContext } from "react";
