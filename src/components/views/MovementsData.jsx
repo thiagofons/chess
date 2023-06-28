@@ -1,56 +1,54 @@
 import React from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 
-import "../../styles/main.sass"
-import { Row } from 'react-bootstrap';
+const MovementsData = ({ moves }) => {
+  const getMoveText = (move, index) => {
+    if (move.isCapture) {
+      return (
+        <Row>
+          {index + 1}. <span style={{ display: 'contents' }}><img className="movements__data__piece" src={move.srcPiece.src} alt={move.srcPiece.alt} /></span> {move.srcSquare.id.toUpperCase()} Captura <span style={{ display: 'contents' }}><img className="movements__data__piece" src={move.capturePiece.src} alt={move.capturePiece.alt} /></span> {move.destSquare.id.toUpperCase()}
+        </Row>
+      )
+    } else {
+      return (
+        <Row>
+          {index + 1}. <span style={{ display: 'contents' }}><img className="movements__data__piece" src={move.srcPiece.src} alt={move.srcPiece.alt} /></span> {move.srcSquare.id.toUpperCase()} -> {move.destSquare.id.toUpperCase()}
+        </Row>
+      )
+    }
 
-import rollBack from "../../img/icons/rotate-left-arrow.svg"
-import forward from "../../img/icons/rotate-right-arrow.svg"
+  }
 
-const MovementsData = ({moves}) => {
   return (
-    <div className="movements__data">
-      
-      <div className="movements__data__header">
-        <span>white</span>
-        <span>black</span>
-      </div>
-      <div className="movements__data__content">
-        <Row>1</Row>
-        {/* <span className="movements__data__content__number">1</span>
-        <div className="movements__data__content__row">
-          <div className="white__movement">
-            1
-          </div>
-          <div className="black__movement">
-            2
-          </div>
-        </div>
-        <div className="movements__data__content__row">
-          <div className="white__movement">
-            3
-          </div>
-          <div className="black__movement">
-            4
-          </div>
-        </div>
-        <div className="movements__data__content__row">
-          <div className="white__movement">
-            5
-          </div>
-          <div className="black__movement">
-            6
-          </div>
-        </div> */}
-      </div>
-      {/* <div className="movements__data__controls">
-        <div className="rollback">
-          <img src={rollBack} alt="" />
-        </div>
-        <div className="forward">
-          <img src={forward} alt="" />
-        </div>
-      </div> */}
-    </div>
+    <Container className="movements__data overflow-auto">
+      <Row>
+        <Col md='6' className='px-5 py-1' id='white' >
+          <Row>Branco</Row>
+          {moves.map((move, index) => {
+            if (move.srcPiece.color == "white") {
+              return (
+                getMoveText(move, index)
+              )
+            } else {
+              return (<Row><br /></Row>);
+            }
+
+          })}
+        </Col>
+        <Col md='6' className='px-5 py-1' id='black'>
+          <Row>Preto</Row>
+          {moves.map((move, index) => {
+            if (move.srcPiece.color == "black") {
+              return (
+                getMoveText(move, index)
+              )
+            } else {
+              return (<Row><br /></Row>);
+            }
+          })}
+        </Col>
+      </Row>
+    </Container>
   )
 }
 
