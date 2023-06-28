@@ -15,7 +15,6 @@ const NavBar = ({ showMenu, setShowMenu }) => {
           className="menu__btn"
           onClick={(e) => {
             setShowMenu(!showMenu);
-            console.log("ok");
           }}
         >
           <img src={menuBtn} alt="menu button" />
