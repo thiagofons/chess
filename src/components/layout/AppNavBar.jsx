@@ -7,10 +7,10 @@ import menuBtn from "../../img/icons/menu-btn.svg";
 
 import Menu from "../views/Menu";
 
-const NavBar = ({ showMenu, setShowMenu }) => {
+const AppNavBar = ({ showMenu, setShowMenu, handleSurrender }) => {
   return (
-    <nav className="navbar">
-      <div className="navbar__main">
+    <nav className="app__navbar">
+      <div className="app__navbar__main">
         <div
           className="menu__btn"
           onClick={(e) => {
@@ -24,9 +24,9 @@ const NavBar = ({ showMenu, setShowMenu }) => {
         </div>
       </div>
 
-      <Menu showMenu={showMenu} />
+      <Menu showMenu={showMenu} handleSurrender={handleSurrender} />
     </nav>
   );
 };
 
-export default NavBar;
+export default AppNavBar;
