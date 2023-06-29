@@ -16,9 +16,16 @@ def todas_jogadas(tabuleiro, quem, mod): #todas as possiveis casas que podem ser
                     if str(tabuleiro[i][j])[1] != "p":
                         jogadas = tabuleiro[i][j].verifica(tabuleiro, i, j, False, [], mod-1)
                     else:
-                        for k in tabuleiro[i][j].verifica(tabuleiro, i, j, False, [], mod-1):
-                            if j != k[1]:
-                                jogadas = jogadas + [k[0], k[1]]
+                        for k in range(-1, 2):
+                            if quem == "j":
+                                if i - 1 >= 0:
+                                    if j + k >= 0 and j + k <= 7:
+                                        jogadas = jogadas + [[i-1, j+k]]
+                            else: 
+                                if i + 1 <= 7:
+                                    if j + k >= 0 and j + k <= 7:
+                                        jogadas = jogadas + [[i+1, j+k]]
+
             if jogadas:
                 checa = checa + jogadas
 

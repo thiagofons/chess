@@ -38,9 +38,8 @@ def moves(y, x):
 @app.route('/moves/<int:y>and<int:x>por<int:z>and<int:w>', methods=['GET'])
 def troca(y, x, z, w):
     novo = [z, w]
-    if TABULEIRO[y][x] != "XX":
-        print(TABULEIRO[y][x].verifica(TABULEIRO, y, x))
-        if novo in TABULEIRO[y][x].verifica(TABULEIRO, y, x):
+    if str(TABULEIRO[y][x])[0] != "j":       
+        if novo in TABULEIRO[y][x].verifica(TABULEIRO, y, x, False, QTD_JREI, 2):
             TABULEIRO[z][w] = TABULEIRO[y][x]
             TABULEIRO[y][x] = "XX"
             TABULEIRO_JOGADOR[z][w] = TABULEIRO_JOGADOR[y][x]
@@ -51,16 +50,26 @@ def troca(y, x, z, w):
                         TABULEIRO[z][w] = rainha.Rainha("js")
                     else:
                         TABULEIRO[z][w] = rainha.Rainha("is")
-            if (str(TABULEIRO[z][w])[0] == "j"):  # Testar
-                pos_rei = pecas.identificarei(TABULEIRO, "ir")
-                QTD_IREI = pecas.check(TABULEIRO, pos_rei[0], pos_rei[1], "j")
-            else:  # Testar
-                pos_rei = pecas.identificarei(TABULEIRO, "jr")
-                QTD_JREI = pecas.check(TABULEIRO, pos_rei[0], pos_rei[1], "i")
-            return True
+            
+            return "True"
+        
+    if TABULEIRO[y][x] != "i":
+        if novo in TABULEIRO[y][x].verifica(TABULEIRO, y, x, False, QTD_IREI, 2):
+            TABULEIRO[z][w] = TABULEIRO[y][x]
+            TABULEIRO[y][x] = "XX"
+            TABULEIRO_JOGADOR[z][w] = TABULEIRO_JOGADOR[y][x]
+            TABULEIRO_JOGADOR[y][x] = "XX"
+            if z == 7 or z == 0:
+                if (str(TABULEIRO[z][w])[0] == "p"):
+                    if (str(TABULEIRO[z][w])[0] == "j"):
+                        TABULEIRO[z][w] = rainha.Rainha("js")
+                    else:
+                        TABULEIRO[z][w] = rainha.Rainha("is")
+            
+            return "True"
 
     imprime()
-    return False
+    return "False"
 
 
 @app.route('/moves/IA')

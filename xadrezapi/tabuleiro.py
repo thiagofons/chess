@@ -30,7 +30,7 @@ def inicia():
         tabuleiro.append(["XX", "XX", "XX", "XX", "XX", "XX", "XX", "XX"])
         # tabuleiro.append(["  ", "  ", "  ", "  ", "  ", "  ", "  ", "  "])
     tabuleiro[4][4]=rainha.Rainha("is")
-    tabuleiro[4][1]=rei.Rei("js")
+    tabuleiro[3][1]=rei.Rei("js")
     tabuleiro.append(pecas_peao_j)
     tabuleiro.append(pecas_j)
     tabuleiro_jogador=[]
