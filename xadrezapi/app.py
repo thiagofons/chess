@@ -21,8 +21,21 @@ app = Flask(__name__)
 
 @app.route('/inicia', methods=['GET'])
 def retorno():
-    imprime()
     return TABULEIRO_JOGADOR
+
+
+@app.route("/xeque-mate-ia", methods=['GET'])
+def verifica_xeque_mate_ia():
+    if pecas.check(TABULEIRO, "i", 2):
+        return "true"
+    return "false"
+
+
+@app.route("/xeque-mate-jogador", methods=['GET'])
+def verifica_xeque_mate_jogador():
+    if pecas.check(TABULEIRO, "j", 2):
+        return "true"
+    return "false"
 
 
 @app.route('/moves/<int:y>and<int:x>', methods=['GET'])
@@ -72,12 +85,12 @@ def troca(y, x, z, w):
     return "False"
 
 
-@app.route('/moves/IA')
+@app.route('/moves/IA/<int:dificuldade>')
 def jogaIA(dificuldade):
     if dificuldade == 0:
         PECASIA = pecas.pecasIA(TABULEIRO, "i", 2)
         tam = len(PECASIA)
-        rand_move = random.randint(0, tam)
+        rand_move = random.randint(0, tam - 1)
         k = PECASIA[rand_move]
         movimento = TABULEIRO[k[0]][k[1]].verifica(
             TABULEIRO, k[0], k[1], False, [], 1)
@@ -88,91 +101,102 @@ def jogaIA(dificuldade):
         maior = -1
         pos_peca = []
         pos_casa = []
-
+        
         if pecas_ia:
             for k in pecas_ia:
-                for h in TABULEIRO[k[0]][k[1]].verifica(TABULEIRO, k[0], k[1], False, [], 1):
-                    match str(TABULEIRO[h[0]][h[1]])[1]:
+                for h in TABULEIRO[k[0]][k[1]].verifica(TABULEIRO, k[0], k[1], False, [], 2):
+                    teste = str(TABULEIRO[h[0]][h[1]])[1]
+
+
+                    match teste:
+
                         case "X":
                             if maior < 0:
                                 maior = 0
                                 pos_peca = []
                                 pos_casa = []
 
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                             elif maior == 0:
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                         case "p":
                             if maior < 1:
                                 maior = 1
                                 pos_peca = []
                                 pos_casa = []
 
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                             elif maior == 1:
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                         case "c":
                             if maior < 2:
                                 maior = 2
                                 pos_peca = []
                                 pos_casa = []
 
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                             elif maior == 2:
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                         case "t":
                             if maior < 3:
                                 maior = 3
                                 pos_peca = []
                                 pos_casa = []
 
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                             elif maior == 3:
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                         case "b":
                             if maior < 4:
                                 maior = 4
                                 pos_peca = []
                                 pos_casa = []
 
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                             elif maior == 4:
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                         case "s":
                             if maior < 5:
                                 maior = 5
                                 pos_peca = []
                                 pos_casa = []
 
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                             elif maior == 5:
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                         case "r":
                             if maior < 10:
                                 maior = 10
                                 pos_peca = []
                                 pos_casa = []
 
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
                             elif maior == 10:
-                                pos_peca = pos_peca + [h[0], h[1]]
-                                pos_casa = pos_casa + [k[0], k[1]]
-            valor = random.randint(0, len(pos_peca))        
-            return troca(pos_peca[valor][0], pos_peca[valor][1], pos_casa[valor][0], pos_casa[valor][1])
+                                pos_peca = pos_peca + [[k[0], k[1]]]
+                                pos_casa = pos_casa + [[h[0], h[1]]]
+            valor = random.randint(0, len(pos_peca) - 1)  
 
+            # print(pos_peca[valor][0])
+            # print(pos_peca[valor][1])
+
+            resultado = troca(pos_peca[valor][0], pos_peca[valor][1], pos_casa[valor][0], pos_casa[valor][1])
+            
+            # print([pos_peca[valor][0], pos_peca[valor][1]] + [pos_casa[valor][0], pos_casa[valor][1]])
+            return [[pos_peca[valor][0], pos_peca[valor][1]], [pos_casa[valor][0], pos_casa[valor][1]]]
+            
         else:
             return []
 
@@ -189,19 +213,5 @@ def imprime():
         linha = ""
 
 
-for k in PECASIA:
-    print("posição da peça")
-    print(k)
-    print("nome da peça")
-    print(TABULEIRO_JOGADOR[k[0]][k[1]])
-    print("onde a peça pode andar")
-    print(TABULEIRO[k[0]][k[1]].verifica(TABULEIRO, k[0], k[1], False, [], 1))
-
-#todas_jogadas_ia = pecas.todas_jogadas(TABULEIRO, "i", 2)
-#print("Todas as jogadas: ", todas_jogadas_ia)
-#print("=============================")
-
-teste = pecas.todas_jogadas(TABULEIRO, "j", 2)
-print(teste)
 
 app.run(port=5000, host='localhost', debug=True)

@@ -45,17 +45,18 @@ def pecasIA(tabuleiro, quem, mod): #todas as possiveis casas que podem ser jogad
             jogadas = []
     return checa
 
-def check(tabuleiro,y,x,quem, mod):
+def check(tabuleiro, quem, mod):
     checa = []
     jogadas = []
-    rei=[y,x]
+    
     for i in range(8):
         for j in range(8):
             if str(tabuleiro[i][j])[0] == quem:
                 if len(str(tabuleiro[i][j])) > 1:
                     jogadas = tabuleiro[i][j].verifica(tabuleiro, i, j, False, [], mod-1)
-            if rei in jogadas :
-                checa.append([i, j])
+            if jogadas:
+                checa = checa + jogadas
+                
     return checa
 
 class Pecas:

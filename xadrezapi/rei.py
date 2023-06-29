@@ -26,12 +26,6 @@ class Rei(pecas.Pecas):
             for k in posibilidade:  # percorro a lista adicionando uma peça teste e verificando o caminho da peca dando check
                 if mod > 0:
                     todas_jogadas_inimigas = pecas.todas_jogadas(tabuleiro, "i", 2)
-                    print("Todas as jogadas:")
-                    print(todas_jogadas_inimigas)
-                    print("Possibilidade da vez:")
-                    print(k)
-                    print(k not in todas_jogadas_inimigas)
-
                     if (k not in todas_jogadas_inimigas):
                         posibilidade_final.append(k)
                 
