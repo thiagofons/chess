@@ -4,6 +4,7 @@ import movingPieceAudio from "../../audios/moving_piece.mp3";
 import Pieces from "../../pieces";
 import Square from '../assets/Square';
 import Move from '../assets/Move';
+import GAME_STATE from "../assets/GameState";
 
 const Board = (props) => {
   const [audios, setAudios] = useState({
@@ -185,6 +186,14 @@ const Board = (props) => {
 
   const [board, setBoard] = useState(initializeBoard());
   const [selectedSquare, setSelectedSquare] = useState(null);
+
+  useEffect(() => {
+    if(props.gameState == GAME_STATE.START_GAME) {
+      setBoard(initializeBoard());
+      props.setGameState(GAME_STATE.ONGOING);
+    }
+  }, [props.gameState])
+
 
   const alternatePlayer = () => {
 		console.log(currentPlayer)

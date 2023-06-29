@@ -10,6 +10,7 @@ const Menu = ({
   updateDifficulty,
   updateMaxTime,
   showMenu,
+  handleSurrender
 }) => {
   const { options, setOptions } = useContext(MenuContext);
 
@@ -114,7 +115,7 @@ const Menu = ({
               <option value="hard">hard</option>
             </select>
           </section>
-          <section className="max__time">
+          {/* <section className="max__time">
             <h3>max-time</h3>
             <input
               type="number"
@@ -125,12 +126,12 @@ const Menu = ({
               onChange={(e) => setOptions({...options, maxTime: e.target.value})}
               value={options.maxTime}
             />
-          </section>
+          </section> */}
         </main>
       </section>
       <section className="menu__buttons">
-        <button className="start__btn">start</button>
-        <button className="surrender__btn">surrender</button>
+        {/* <button className="start__btn">start</button> */}
+        <button className="surrender__btn" onClick={(e) => {e.preventDefault(); handleSurrender();}}>surrender</button>
       </section>
     </aside>
   );
