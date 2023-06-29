@@ -10,15 +10,15 @@ import "../../styles/main.sass";
 
 const Game = (props) => {
 
-	const {options} = useContext(MenuContext);
-	const [currentPlayer, setCurrentPlayer] = useState(2);
+	const { options } = useContext(MenuContext);
+	const [currentPlayer, setCurrentPlayer] = useState((Date.now() % 2) + 1);
 
 	const initializePieces = () => {
 		let piecesTemp = [];
 		for (let colorKey in Pieces) {
-			for(let pieceKey in Pieces[colorKey]) {
+			for (let pieceKey in Pieces[colorKey]) {
 				let piece = Pieces[colorKey][pieceKey];
-	
+
 				// 8 peões
 				if (pieceKey == 'pawn') {
 					for (let i = 0; i < 8; i++) {
@@ -39,24 +39,24 @@ const Game = (props) => {
 
 		return piecesTemp;
 	}
-	
+
 	const [pieces, setPieces] = useState(initializePieces());
 
 	const alternatePlayer = () => {
-		if(currentPlayer == 1) {
+		if (currentPlayer == 1) {
 			setCurrentPlayer(2);
-		} else if(currentPlayer == 2) {
+		} else if (currentPlayer == 2) {
 			setCurrentPlayer(1);
 		}
 	}
 
 	return (
-    <main className="game px-2">
-      <Player name={options.players.player1} side="left" isCurrPlayer={currentPlayer == 1}/>
-      <Board pieces={pieces} appendMove={props.appendMove} currentPlayer={currentPlayer} alternatePlayer={alternatePlayer} />
-      <Player name={options.players.player2} side="right" isCurrPlayer={currentPlayer == 2}/>
-    </main>
-  );
+		<main className="game px-2">
+			<Player name={options.players.player1} side="left" isCurrPlayer={currentPlayer == 1} />
+			<Board pieces={pieces} appendMove={props.appendMove} currentPlayer={currentPlayer} alternatePlayer={alternatePlayer} />
+			<Player name={options.players.player2} side="right" isCurrPlayer={currentPlayer == 2} />
+		</main>
+	);
 
 }
 
