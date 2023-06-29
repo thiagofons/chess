@@ -6,7 +6,6 @@ import Square from '../assets/Square';
 import Move from '../assets/Move';
 import GAME_STATE from "../assets/GameState";
 import api from "../../api/api";
-import axios from "axios";
 
 const Board = (props) => {
   const [audios, setAudios] = useState({
