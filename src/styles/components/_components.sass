@@ -33,31 +33,39 @@
   justify-self: left
 .player__right
   justify-self: right
-  
 
 /* Board */
 .board
   display: grid
   grid-template-rows: repeat(8, 1fr)
   grid-template-columns: repeat(8, 1fr)
-  
-  width: 100%
+
+  min-width: 20rem
+  max-width: 40rem
   aspect-ratio: 1/1
+
+  margin-left: auto
+  margin-right: auto
 
   box-shadow: 0 0 1rem rgba(0, 0, 0, 75%)
 
   &>*
-   display: flex
-   justify-content: center
-   align-items: center 
+    display: flex
+    justify-content: center
+    align-items: center
 
-  .cell 
-    height: 2.8rem
-    width: 2.8rem
+  .cell
+    aspect-ratio: 1/1
     padding: .25rem
     display: flex
     justify-content: center
     align-items: center
+    transition: .1s
+    &:hover
+      cursor: pointer
+      
+    
+      
 
   .light
     background-color: variables.$light-cell
@@ -66,25 +74,31 @@
     background-color: variables.$dark-cell
 
 .piece
-  height: 2.8rem
-  width: 2.8rem
+  height: 100%
+  width: 100%
+  &:hover
+    filter: brightness(50%)
 
 .selected-piece
   border: 1px yellow solid
-  z-index: 999
+  z-index: 1
 
 /* Movements Data */
 .movements__data
   color: variables.$off-white
   padding: .5rem
   background-color: variables.$grey
+  min-width: 375px
   width: 100%
-  height: 15rem
+  height: 100%
+  //min-height: 15rem
+  //max-height: 40rem
   border-radius: 5px
   box-shadow: 0, 1rem, 1rem, black
+  font-size: 15px
 
   &__header
-    padding-left: 1rem 
+    padding-left: 1rem
     width: 100%
     display: flex
     justify-content: space-between
@@ -108,7 +122,6 @@
     display: flex
     justify-content: space-around
 
-    
-      
-      
-      
+  &__piece
+    width: 1.3rem
+    margin-left: .25rem

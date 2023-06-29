@@ -1,209 +1,300 @@
-import React from 'react';
-
-import "../../styles/main.sass"
-import { useState } from 'react';
-
-import boardImage from "../../img/board/board.svg"
-import { useEffect } from 'react';
-
-import Pieces from "../../pieces"
+import React, { useState, useContext, useEffect } from "react";
+import { MenuContext } from "../controllers/MenuContext";
+import movingPieceAudio from "../../audios/moving_piece.mp3";
+import Pieces from "../../pieces";
 import Square from '../assets/Square';
+import Move from '../assets/Move';
+import GAME_STATE from "../assets/GameState";
 
-const Board = () => {
-  /* const [board, setBoard] = useState([]);
-  const [selectedPiece, setSelectedPiece] = useState(null);
+const Board = (props) => {
+  const [audios, setAudios] = useState({
+    movingPiece: new Audio(movingPieceAudio),
+  });
 
-  // Start the board
-  const setSquares = () => {
-    let types=["light", "dark"];
-
-    for(let i = 0; i < 64; i++) {
-      setBoard(...board, <Square type={types[i % 2]} piece={""}/>)
-    }
-  }
+  const { options, setOptions } = useContext(MenuContext);
+  const [currentPlayer, setCurrentPlayer] = useState(props.currentPlayer);
+  const [showWrongPieceError, setShowWrongPieceError] = useState(false);
 
   useEffect(() => {
-    setSquares()
-      
-  }, [])
+    setCurrentPlayer(currentPlayer);
+  }, [props.currentPlayer])
 
-  return (
-    <div className="board">
-      
-    </div>
-  ) */
+  useEffect(() => {
+    audios.movingPiece.volume = options.volume / 100;
+  }, [options.volume]);
 
-  const [board, setBoard] = useState([]);
-  const [selectedPiece, setSelectedPiece] = useState(null);
+  const getColName = (col) => {
+    switch (col) {
+      case 0:
+        return "a";
+      case 1:
+        return "b";
+      case 2:
+        return "c";
+      case 3:
+        return "d";
+      case 4:
+        return "e";
+      case 5:
+        return "f";
+      case 6:
+        return "g";
+      case 7:
+        return "h";
+    }
+  };
 
-  const handleClick = (event) => {
-    let ct = event.currentTarget;
-    if (ct.children.length != 0) {
-      if (selectedPiece) {
-        if (ct.id != selectedPiece) {
-          let old = document.getElementById(selectedPiece);
-          old.classList.toggle("selected-piece");
-          setSelectedPiece(ct.id);
-        } else {
-          setSelectedPiece(null);
-        }
-      } else {
-        setSelectedPiece(ct.id);
-      }
-      ct.classList.toggle("selected-piece");
-    }else{
-      if (selectedPiece) {
-        let old = document.getElementById(selectedPiece);
-        old.classList.toggle("selected-piece");
-        setSelectedPiece(null);
-        let teste = old.firstElementChild;
-        ct.appendChild(teste.cloneNode(true))
-        teste.remove()
+  const getPiece = (row, col) => {
+    // Peças pretas
+    if (row === 0) {
+      // eslint-disable-next-line default-case
+      switch (col) {
+        case 0:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.black.rook.alt + " 1"
+          );
+        case 1:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.black.knight.alt + " 1"
+          );
+        case 2:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.black.bishop.alt + " 1"
+          );
+        case 3:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.black.king.alt
+          );
+        case 4:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.black.queen.alt
+          );
+        case 5:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.black.bishop.alt + " 2"
+          );
+        case 6:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.black.knight.alt + " 2"
+          );
+        case 7:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.black.rook.alt + " 2"
+          );
       }
     }
+
+    // Peões pretos
+    else if (row == 1) {
+      return props.pieces.find(
+        (piece) =>
+          piece.alt == Pieces.black.pawn.alt + " " + (col + 1).toString()
+      );
+    }
+
+    // Peões brancos
+    else if (row == 6) {
+      return props.pieces.find(
+        (piece) =>
+          piece.alt == Pieces.white.pawn.alt + " " + (col + 1).toString()
+      );
+    }
+
+    // Peças brancas
+    else if (row == 7) {
+      // eslint-disable-next-line default-case
+      switch (col) {
+        case 0:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.white.rook.alt + " 1"
+          );
+        case 1:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.white.knight.alt + " 1"
+          );
+        case 2:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.white.bishop.alt + " 1"
+          );
+        case 3:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.white.king.alt
+          );
+        case 4:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.white.queen.alt
+          );
+        case 5:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.white.bishop.alt + " 2"
+          );
+        case 6:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.white.knight.alt + " 2"
+          );
+        case 7:
+          return props.pieces.find(
+            (piece) => piece.alt == Pieces.white.rook.alt + " 2"
+          );
+      }
+    }
+  };
+
+  const initializeBoard = () => {
+    let mat = [];
+    let row = 0,
+      col = 0;
+
+    for (row = 0; row < 8; row++) {
+      mat[row] = [];
+      for (col = 0; col < 8; col++) {
+        let className = "cell";
+
+        // se linha for par começa com célula clara
+        if (row % 2) {
+          // se coluna for par é claro
+          if (col % 2) {
+            className += " light";
+          }
+          // senão é escuro
+          else {
+            className += " dark";
+          }
+        }
+        // senão começa com célula escura
+        else {
+          // se coluna for par é escuro
+          if (col % 2) {
+            className += " dark";
+          }
+          // senão é claro
+          else {
+            className += " light";
+          }
+        }
+
+        let rowName = (8 - row).toString();
+        let colName = getColName(col);
+        let piece = getPiece(row, col);
+
+        mat[row][col] = new Square(piece, rowName, colName, className);
+      }
+    }
+
+    return mat;
+  };
+
+  const [board, setBoard] = useState(initializeBoard());
+  const [selectedSquare, setSelectedSquare] = useState(null);
+
+  useEffect(() => {
+    if(props.gameState == GAME_STATE.START_GAME) {
+      setBoard(initializeBoard());
+      props.setGameState(GAME_STATE.ONGOING);
+    }
+  }, [props.gameState])
+
+
+  const alternatePlayer = () => {
+		console.log(currentPlayer)
+    props.alternatePlayer();
+		if(currentPlayer == 1) {
+			setCurrentPlayer(2);
+		} else if(currentPlayer == 2) {
+			setCurrentPlayer(1);
+		}
+	}
+
+  const changeSelectedSquare = (square) => {
+    setSelectedSquare(square);
+    setShowWrongPieceError(false);
   }
+
+  const handleClick = (square) => {
+    // Selecionando quadrado novo
+    if (square != selectedSquare) {
+      let oldSquare = selectedSquare;
+      // Se tinha quadrado antigo selecionado
+      if (oldSquare) {
+        let move = new Move(oldSquare, oldSquare.piece, square);
+
+        // Captura sendo feito
+        if (square.piece) {
+          if (square.piece.color != oldSquare.piece.color) {
+            move.capturePiece = square.piece;
+            move.isCapture = true;
+            //square.piece.capture();
+          } else {
+            alert("Não pode capturar sua própria peça!");
+            return;
+          }
+        }
+
+        // Movimentação da peça
+        square.piece = oldSquare.piece;
+        oldSquare.piece = null;
+        audios.movingPiece.play();
+
+        // Ao final de movimento/captura deseleciona quadrado
+        selectedSquare.setIsSelected(false);
+        changeSelectedSquare(null);
+        props.appendMove(move);
+        alternatePlayer();
+      }
+      // Se não tinha quadrado antigo selecionado
+      else {
+        // Seleciona quadrado novo apenas se há peça nele
+        if (square.piece) {
+          if (currentPlayer == 1 && square.piece.color != "black") {
+            setShowWrongPieceError(true);
+            return;
+          } 
+          if (currentPlayer == 2 && square.piece.color != "white") {
+            setShowWrongPieceError(true);
+            return;
+          }
+          
+          changeSelectedSquare(square);
+          square.setIsSelected(true);
+        }
+      }
+    }
+    // Selecionando mesmo quadrado
+    else {
+      selectedSquare.setIsSelected(false);
+      changeSelectedSquare(null);
+    }
+  };
 
   return (
     <>
       <div>
-        {(selectedPiece &&
-          <span style={{ color: "white" }}>Selected Piece: {selectedPiece}</span>) ||
-          <span style={{ color: "white" }}>No piece selected!</span>
+        {(selectedSquare &&
+          <>
+            {selectedSquare.piece && <span style={{ color: "white" }}>Peça Selecionada: {selectedSquare.piece.alt}</span>}
+            <br />
+            <span style={{ color: "white" }}>Quadrado Selecionado: {selectedSquare.id}</span>
+          </>
+        ) ||
+
+          (showWrongPieceError ?
+            <>
+              <br />
+              <span style={{ color: "white" }}>Esta peça não pertence a você!</span>
+            </> :
+            <>
+              <br />
+              <span style={{ color: "white" }}>Nenhuma peça selecionada.</span>
+            </>)
         }
       </div>
       <main className="board">
-        <div className="cell light" id="a8" onClick={handleClick}>
-          <img src={Pieces.black.rook} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="b8" onClick={handleClick}>
-          <img src={Pieces.black.knight} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="c8" onClick={handleClick}>
-          <img src={Pieces.black.bishop} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="d8" onClick={handleClick}>
-          <img src={Pieces.black.king} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="e8" onClick={handleClick}>
-          <img src={Pieces.black.queen} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="f8" onClick={handleClick}>
-          <img src={Pieces.black.bishop} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="g8" onClick={handleClick}>
-          <img src={Pieces.black.knight} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="h8" onClick={handleClick}>
-          <img src={Pieces.black.rook} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="a7" onClick={handleClick}>
-          <img src={Pieces.black.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="b7" onClick={handleClick}>
-          <img src={Pieces.black.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="c7" onClick={handleClick}>
-          <img src={Pieces.black.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="d7" onClick={handleClick}>
-          <img src={Pieces.black.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="e7" onClick={handleClick}>
-          <img src={Pieces.black.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="f7" onClick={handleClick}>
-          <img src={Pieces.black.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="g7" onClick={handleClick}>
-          <img src={Pieces.black.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="h7" onClick={handleClick}>
-          <img src={Pieces.black.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="a6" onClick={handleClick}></div>
-        <div className="cell dark" id="b6" onClick={handleClick}></div>
-        <div className="cell light" id="c6" onClick={handleClick}></div>
-        <div className="cell dark" id="d6" onClick={handleClick}></div>
-        <div className="cell light" id="e6" onClick={handleClick}></div>
-        <div className="cell dark" id="f6" onClick={handleClick}></div>
-        <div className="cell light" id="g6" onClick={handleClick}></div>
-        <div className="cell dark" id="h6" onClick={handleClick}></div>
-        <div className="cell dark" id="a5" onClick={handleClick}></div>
-        <div className="cell light" id="b5" onClick={handleClick}></div>
-        <div className="cell dark" id="c5" onClick={handleClick}></div>
-        <div className="cell light" id="d5" onClick={handleClick}></div>
-        <div className="cell dark" id="e5" onClick={handleClick}></div>
-        <div className="cell light" id="f5" onClick={handleClick}></div>
-        <div className="cell dark" id="g5" onClick={handleClick}></div>
-        <div className="cell light" id="h5" onClick={handleClick}></div>
-        <div className="cell light" id="a4" onClick={handleClick}></div>
-        <div className="cell dark" id="b4" onClick={handleClick}></div>
-        <div className="cell light" id="c4" onClick={handleClick}></div>
-        <div className="cell dark" id="d4" onClick={handleClick}></div>
-        <div className="cell light" id="e4" onClick={handleClick}></div>
-        <div className="cell dark" id="f4" onClick={handleClick}></div>
-        <div className="cell light" id="g4" onClick={handleClick}></div>
-        <div className="cell dark" id="h4" onClick={handleClick}></div>
-        <div className="cell dark" id="a3" onClick={handleClick}></div>
-        <div className="cell light" id="b3" onClick={handleClick}></div>
-        <div className="cell dark" id="c3" onClick={handleClick}></div>
-        <div className="cell light" id="d3" onClick={handleClick}></div>
-        <div className="cell dark" id="e3" onClick={handleClick}></div>
-        <div className="cell light" id="f3" onClick={handleClick}></div>
-        <div className="cell dark" id="g3" onClick={handleClick}></div>
-        <div className="cell light" id="h3" onClick={handleClick}></div>
-        <div className="cell light" id="a2" onClick={handleClick}>
-          <img src={Pieces.white.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="b2" onClick={handleClick}>
-          <img src={Pieces.white.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="c2" onClick={handleClick}>
-          <img src={Pieces.white.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="d2" onClick={handleClick}>
-          <img src={Pieces.white.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="e2" onClick={handleClick}>
-          <img src={Pieces.white.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="f2" onClick={handleClick}>
-          <img src={Pieces.white.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="g2" onClick={handleClick}>
-          <img src={Pieces.white.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="h2" onClick={handleClick}>
-          <img src={Pieces.white.pawn} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="a1" onClick={handleClick}>
-          <img src={Pieces.white.rook} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="b1" onClick={handleClick}>
-          <img src={Pieces.white.knight} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="c1" onClick={handleClick}>
-          <img src={Pieces.white.bishop} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="d1" onClick={handleClick}>
-          <img src={Pieces.white.king} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="e1" onClick={handleClick}>
-          <img src={Pieces.white.queen} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="f1" onClick={handleClick}>
-          <img src={Pieces.white.bishop} alt="" className="piece" />
-        </div>
-        <div className="cell dark" id="g1" onClick={handleClick}>
-          <img src={Pieces.white.knight} alt="" className="piece" />
-        </div>
-        <div className="cell light" id="h1" onClick={handleClick}>
-          <img src={Pieces.white.rook} alt="" className="piece" />
-        </div>
+        {board.map((row) => {
+          return row.map((square) => square.render(handleClick));
+        })}
       </main>
     </>
-  )
-
-}
+  );
+};
 
 export default Board;
