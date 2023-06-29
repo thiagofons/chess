@@ -1,6 +1,7 @@
 from json import dump
 
 from flask import jsonify, request, Flask
+from flask_cors import CORS, cross_origin
 
 import pecas
 import rainha
@@ -17,14 +18,18 @@ J_JOGADAS = pecas.todas_jogadas(TABULEIRO, "j", 2)
 PECASIA = pecas.pecasIA(TABULEIRO, "i", 2)
 VEZ = "j"
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route('/inicia', methods=['GET'])
+@cross_origin()
 def retorno():
     return TABULEIRO_JOGADOR
 
 
 @app.route("/xeque-mate-ia", methods=['GET'])
+@cross_origin()
 def verifica_xeque_mate_ia():
     if pecas.check(TABULEIRO, "i", 2):
         return "true"
@@ -32,6 +37,7 @@ def verifica_xeque_mate_ia():
 
 
 @app.route("/xeque-mate-jogador", methods=['GET'])
+@cross_origin()
 def verifica_xeque_mate_jogador():
     if pecas.check(TABULEIRO, "j", 2):
         return "true"
@@ -39,6 +45,7 @@ def verifica_xeque_mate_jogador():
 
 
 @app.route('/moves/<int:y>and<int:x>', methods=['GET'])
+@cross_origin()
 def moves(y, x):
     if VEZ == "j":
         verifica = TABULEIRO[y][x].verifica(TABULEIRO, y, x, JREI, QTD_JREI, 1)
@@ -49,6 +56,7 @@ def moves(y, x):
 
 
 @app.route('/moves/<int:y>and<int:x>por<int:z>and<int:w>', methods=['GET'])
+@cross_origin()
 def troca(y, x, z, w):
     novo = [z, w]
     if str(TABULEIRO[y][x])[0] != "j":       
@@ -86,6 +94,7 @@ def troca(y, x, z, w):
 
 
 @app.route('/moves/IA/<int:dificuldade>')
+@cross_origin()
 def jogaIA(dificuldade):
     if dificuldade == 0:
         PECASIA = pecas.pecasIA(TABULEIRO, "i", 2)

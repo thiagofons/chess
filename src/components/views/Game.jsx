@@ -8,7 +8,7 @@ import Player from './Player';
 const Game = (props) => {
 
   const { options } = useContext(MenuContext);
-  const [currentPlayer, setCurrentPlayer] = useState((Date.now() % 2) + 1);
+  const [currentPlayer, setCurrentPlayer] = useState(2);
 
   const initializePieces = () => {
     let piecesTemp = [];
