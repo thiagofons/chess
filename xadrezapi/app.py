@@ -66,12 +66,9 @@ def troca(y, x, z, w):
 
 @app.route('/moves/IA')
 def jogaIA():
-    tam = len(PECASIA)
-    rand_move = random.randint(0, tam)
-    k = PECASIA[rand_move]
-    movimento = TABULEIRO[k[0]][k[1]].verifica(
-        TABULEIRO, k[0], k[1], False, [], 1)
-    return movimento
+    k = random.choice(PECASIA)
+    movimento = TABULEIRO[k[0]][k[1]].verifica(TABULEIRO, k[0], k[1], False, [], 1)
+    return [k, random.choice(movimento)]
 
 
 def imprime():
