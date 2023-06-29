@@ -5,6 +5,8 @@ import Pieces from "../../pieces";
 import Square from '../assets/Square';
 import Move from '../assets/Move';
 import GAME_STATE from "../assets/GameState";
+import api from "../../api/api";
+import axios from "axios";
 
 const Board = (props) => {
   const [audios, setAudios] = useState({
@@ -177,7 +179,7 @@ const Board = (props) => {
         let colName = getColName(col);
         let piece = getPiece(row, col);
 
-        mat[row][col] = new Square(piece, rowName, colName, className);
+        mat[row][col] = new Square(piece, rowName, colName, className, row, col);
       }
     }
 
@@ -188,34 +190,54 @@ const Board = (props) => {
   const [selectedSquare, setSelectedSquare] = useState(null);
 
   useEffect(() => {
-    if(props.gameState == GAME_STATE.START_GAME) {
+    if (props.gameState == GAME_STATE.START_GAME) {
       setBoard(initializeBoard());
       props.setGameState(GAME_STATE.ONGOING);
+      api.get("inicia");
     }
   }, [props.gameState])
 
 
   const alternatePlayer = () => {
-		console.log(currentPlayer)
     props.alternatePlayer();
-		if(currentPlayer == 1) {
-			setCurrentPlayer(2);
-		} else if(currentPlayer == 2) {
-			setCurrentPlayer(1);
-		}
-	}
+    if (currentPlayer == 1) {
+      setCurrentPlayer(2);
+    } else if (currentPlayer == 2) {
+      setCurrentPlayer(1);
+    }
+  }
 
   const changeSelectedSquare = (square) => {
     setSelectedSquare(square);
     setShowWrongPieceError(false);
   }
 
-  const handleClick = (square) => {
+  const [possibleMoves, setPossibleMoves] = useState([]);
+
+  const findSquare = (y, x) => {
+    for (let row = 0; row < board.length; row++) {
+      for (let col = 0; col < board[row].length; col++) {
+        if (row == y && col == x) {
+          return board[row][col];
+        }
+      }
+    }
+  }
+
+  const checkIsPossibleMove = (_possibleMoves, squarePos) => {
+    return _possibleMoves.filter((pos) => pos[0] == squarePos[0] && pos[1] == squarePos[1]).length != 0
+  }
+
+  async function handleClick(square) {
     // Selecionando quadrado novo
     if (square != selectedSquare) {
       let oldSquare = selectedSquare;
       // Se tinha quadrado antigo selecionado
       if (oldSquare) {
+        if(!checkIsPossibleMove(possibleMoves, square.getPosition())) {
+          return;
+        }
+
         let move = new Move(oldSquare, oldSquare.piece, square);
 
         // Captura sendo feito
@@ -240,22 +262,65 @@ const Board = (props) => {
         changeSelectedSquare(null);
         props.appendMove(move);
         alternatePlayer();
+
+        await api
+          .get("moves/" + oldSquare.row + "and" + oldSquare.col + "por" + square.row + "and" + square.col)
+          .catch((err) => console.log("err", err));
+        setPossibleMoves([]);
+
+        // Movimentação de IA
+        await api
+          .get("moves/IA/" + options.difficulty)
+          .then((resp) => {
+            let squares = resp.data;
+            let src = findSquare(squares[0][0], squares[0][1]);
+            let dest = findSquare(squares[1][0], squares[1][1]);
+            let move = new Move(src, src.piece, dest);
+
+            // Captura sendo feito
+            if (dest.piece) {
+              if (dest.piece.color != src.piece.color) {
+                move.capturePiece = dest.piece;
+                move.isCapture = true;
+                //square.piece.capture();
+              }
+            }
+
+            // Movimentação da peça
+            dest.piece = src.piece;
+            src.piece = null;
+            audios.movingPiece.play();
+
+            props.appendMove(move);
+            alternatePlayer();
+          })
+          .catch((err) => {
+            console.log(err);
+          })
       }
       // Se não tinha quadrado antigo selecionado
       else {
         // Seleciona quadrado novo apenas se há peça nele
         if (square.piece) {
-          if (currentPlayer == 1 && square.piece.color != "black") {
-            setShowWrongPieceError(true);
-            return;
-          } 
+          /*if (currentPlayer == 1 && square.piece.color != "black") {
+              setShowWrongPieceError(true);
+              return;
+            } */
           if (currentPlayer == 2 && square.piece.color != "white") {
             setShowWrongPieceError(true);
             return;
           }
-          
+
           changeSelectedSquare(square);
           square.setIsSelected(true);
+          await api
+            .get("moves/" + square.row + "and" + square.col)
+            .then((resp) => {
+              setPossibleMoves(resp.data);
+            })
+            .catch((err) => {
+              console.log("err", err);
+            });
         }
       }
     }
@@ -263,6 +328,7 @@ const Board = (props) => {
     else {
       selectedSquare.setIsSelected(false);
       changeSelectedSquare(null);
+      setPossibleMoves([]);
     }
   };
 
@@ -288,9 +354,10 @@ const Board = (props) => {
             </>)
         }
       </div>
+
       <main className="board">
         {board.map((row) => {
-          return row.map((square) => square.render(handleClick));
+          return row.map((square) => square.render(handleClick, checkIsPossibleMove(possibleMoves, square.getPosition()) ? "cell__move" : ""));
         })}
       </main>
     </>

@@ -23,7 +23,7 @@ const MovementsData = ({ moves }) => {
     <Container fluid className="movements__data overflow-auto">
       <Row>
         <Col xs='12' sm='6' className='px-3 pt-1 pb-4' id='white' >
-          <Row className="mx-auto">Branco</Row>
+          <Row className="mx-auto">Jogador</Row>
           {moves.map((move, index) => {
             if (move.srcPiece.color == "white") {
               return (
@@ -36,7 +36,7 @@ const MovementsData = ({ moves }) => {
           })}
         </Col>
         <Col xs='12' sm='6' className='px-3 pt-1 pb-1' id='black'>
-          <Row className="mx-auto">Preto</Row>
+          <Row className="mx-auto">IA</Row>
           {moves.map((move, index) => {
             if (move.srcPiece.color == "black") {
               return (

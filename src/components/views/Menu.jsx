@@ -111,8 +111,8 @@ const Menu = ({
                 setOptions({ ...options, difficulty: e.target.value })
               }
             >
-              <option value="easy">easy</option>
-              <option value="hard">hard</option>
+              <option value="0">easy</option>
+              <option value="1">hard</option>
             </select>
           </section>
           {/* <section className="max__time">
