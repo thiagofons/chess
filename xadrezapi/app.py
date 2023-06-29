@@ -115,10 +115,7 @@ def jogaIA(dificuldade):
             for k in pecas_ia:
                 for h in TABULEIRO[k[0]][k[1]].verifica(TABULEIRO, k[0], k[1], False, [], 2):
                     teste = str(TABULEIRO[h[0]][h[1]])[1]
-
-
                     match teste:
-
                         case "X":
                             if maior < 0:
                                 maior = 0
@@ -204,9 +201,11 @@ def jogaIA(dificuldade):
             resultado = troca(pos_peca[valor][0], pos_peca[valor][1], pos_casa[valor][0], pos_casa[valor][1])
             
             # print([pos_peca[valor][0], pos_peca[valor][1]] + [pos_casa[valor][0], pos_casa[valor][1]])
+            imprime()
             return [[pos_peca[valor][0], pos_peca[valor][1]], [pos_casa[valor][0], pos_casa[valor][1]]]
             
         else:
+            imprime()
             return []
 
 
