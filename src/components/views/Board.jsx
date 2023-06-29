@@ -2,8 +2,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { MenuContext } from "../controllers/MenuContext";
 import movingPieceAudio from "../../audios/moving_piece.mp3";
 import Pieces from "../../pieces";
-import Square from '../assets/Square';
-import Move from '../assets/Move';
+import Square from "../assets/Square";
+import Move from "../assets/Move";
 import GAME_STATE from "../assets/GameState";
 import api from "../../api/api";
 
@@ -18,7 +18,7 @@ const Board = (props) => {
 
   useEffect(() => {
     setCurrentPlayer(currentPlayer);
-  }, [props.currentPlayer])
+  }, [props.currentPlayer]);
 
   useEffect(() => {
     audios.movingPiece.volume = options.volume / 100;
@@ -178,7 +178,14 @@ const Board = (props) => {
         let colName = getColName(col);
         let piece = getPiece(row, col);
 
-        mat[row][col] = new Square(piece, rowName, colName, className, row, col);
+        mat[row][col] = new Square(
+          piece,
+          rowName,
+          colName,
+          className,
+          row,
+          col
+        );
       }
     }
 
@@ -194,8 +201,7 @@ const Board = (props) => {
       props.setGameState(GAME_STATE.ONGOING);
       api.get("inicia");
     }
-  }, [props.gameState])
-
+  }, [props.gameState]);
 
   const alternatePlayer = () => {
     props.alternatePlayer();
@@ -204,12 +210,12 @@ const Board = (props) => {
     } else if (currentPlayer == 2) {
       setCurrentPlayer(1);
     }
-  }
+  };
 
   const changeSelectedSquare = (square) => {
     setSelectedSquare(square);
     setShowWrongPieceError(false);
-  }
+  };
 
   const [possibleMoves, setPossibleMoves] = useState([]);
 
@@ -221,11 +227,15 @@ const Board = (props) => {
         }
       }
     }
-  }
+  };
 
   const checkIsPossibleMove = (_possibleMoves, squarePos) => {
-    return _possibleMoves.filter((pos) => pos[0] == squarePos[0] && pos[1] == squarePos[1]).length != 0
-  }
+    return (
+      _possibleMoves.filter(
+        (pos) => pos[0] == squarePos[0] && pos[1] == squarePos[1]
+      ).length != 0
+    );
+  };
 
   async function handleClick(square) {
     // Selecionando quadrado novo
@@ -233,7 +243,7 @@ const Board = (props) => {
       let oldSquare = selectedSquare;
       // Se tinha quadrado antigo selecionado
       if (oldSquare) {
-        if(!checkIsPossibleMove(possibleMoves, square.getPosition())) {
+        if (!checkIsPossibleMove(possibleMoves, square.getPosition())) {
           return;
         }
 
@@ -263,7 +273,16 @@ const Board = (props) => {
         alternatePlayer();
 
         await api
-          .get("moves/" + oldSquare.row + "and" + oldSquare.col + "por" + square.row + "and" + square.col)
+          .get(
+            "moves/" +
+              oldSquare.row +
+              "and" +
+              oldSquare.col +
+              "por" +
+              square.row +
+              "and" +
+              square.col
+          )
           .catch((err) => console.log("err", err));
         setPossibleMoves([]);
 
@@ -295,7 +314,7 @@ const Board = (props) => {
           })
           .catch((err) => {
             console.log(err);
-          })
+          });
       }
       // Se não tinha quadrado antigo selecionado
       else {
@@ -329,37 +348,21 @@ const Board = (props) => {
       changeSelectedSquare(null);
       setPossibleMoves([]);
     }
-  };
+  }
 
   return (
-    <>
-      <div>
-        {(selectedSquare &&
-          <>
-            {selectedSquare.piece && <span style={{ color: "white" }}>Peça Selecionada: {selectedSquare.piece.alt}</span>}
-            <br />
-            <span style={{ color: "white" }}>Quadrado Selecionado: {selectedSquare.id}</span>
-          </>
-        ) ||
-
-          (showWrongPieceError ?
-            <>
-              <br />
-              <span style={{ color: "white" }}>Esta peça não pertence a você!</span>
-            </> :
-            <>
-              <br />
-              <span style={{ color: "white" }}>Nenhuma peça selecionada.</span>
-            </>)
-        }
-      </div>
-
-      <main className="board">
-        {board.map((row) => {
-          return row.map((square) => square.render(handleClick, checkIsPossibleMove(possibleMoves, square.getPosition()) ? "cell__move" : ""));
-        })}
-      </main>
-    </>
+    <main className="board">
+      {board.map((row) => {
+        return row.map((square) =>
+          square.render(
+            handleClick,
+            checkIsPossibleMove(possibleMoves, square.getPosition())
+              ? "cell__move"
+              : ""
+          )
+        );
+      })}
+    </main>
   );
 };
 

@@ -111,7 +111,7 @@ const Menu = ({
                 setOptions({ ...options, difficulty: e.target.value })
               }
             >
-              <option value="0">easy</option>
+              {/*<option value="0">easy</option>*/}
               <option value="1">hard</option>
             </select>
           </section>

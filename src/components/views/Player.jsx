@@ -12,10 +12,6 @@ const Player = ({side, name, isCurrPlayer}) => {
       </div>
       <div className="player__info">
         <div className="player__name">{name}</div>
-        {
-          isCurrPlayer &&
-          <span>Sua vez!</span>
-        }
       </div>
     </div>
   )

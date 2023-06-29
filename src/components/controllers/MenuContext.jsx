@@ -9,7 +9,7 @@ export const MenuProvider = ({ children }) => {
       player1: "IA",
       player2: "Jogador",
     },
-    difficulty: 0,
+    difficulty: 1,
     maxTime: "10",
   });
 
