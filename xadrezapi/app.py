@@ -1,6 +1,7 @@
 from json import dump
 
 from flask import jsonify, request, Flask
+from flask_cors import CORS, cross_origin
 
 import pecas
 import rainha
@@ -18,25 +19,30 @@ J_JOGADAS = pecas.todas_jogadas(TABULEIRO, "j", 2)
 PECASIA = pecas.pecasIA(TABULEIRO, "i", 2)
 VEZ = "j"
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route('/inicia', methods=['GET'])
+@cross_origin()
 def retorno():
     imprime()
     return TABULEIRO_JOGADOR
 
 
 @app.route('/moves/<int:y>and<int:x>')
+@cross_origin()
 def moves(y, x):
     if VEZ == "j":
-        verifica = TABULEIRO[y][x].verifica(TABULEIRO, y, x, JREI, QTD_JREI)
+        verifica = TABULEIRO[y][x].verifica(TABULEIRO, y, x, JREI, QTD_JREI, 1)
         return verifica
     else:
-        verifica = TABULEIRO[y][x].verifica(TABULEIRO, y, x, IREI, QTD_IREI)
+        verifica = TABULEIRO[y][x].verifica(TABULEIRO, y, x, IREI, QTD_IREI, 1)
         return verifica
 
 
 @app.route('/moves/<int:y>and<int:x>por<int:z>and<int:w>')
+@cross_origin()
 def troca(y, x, z, w):
     novo = [z, w]
     if TABULEIRO[y][x] != "XX":
@@ -65,6 +71,7 @@ def troca(y, x, z, w):
 
 
 @app.route('/moves/IA')
+@cross_origin()
 def jogaIA():
     if len(PECASIA) == 0:
         return []
